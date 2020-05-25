@@ -21,7 +21,18 @@ public class MarshallingEncoder {
         marshaller = MarshallingCodecFactory.buildMarshalling();
     }
 
-    protected void encode(Object msg, ByteBuf out) {
-
+    protected void encode(Object msg, ByteBuf out) throws IOException {
+        // 已写入长度位置
+        try {
+            int lengthPos = out.writerIndex();
+            out.writeBytes(LENGTH_PLACEHOLDER);
+            ChannelBufferByteOutput output = new ChannelBufferByteOutput(out);
+            marshaller.start(output);
+            marshaller.writeObject(msg);
+            marshaller.finish();
+            out.setInt(lengthPos, out.writerIndex() - lengthPos - 4);
+        }finally {
+            marshaller.close();
+        }
     }
 }
