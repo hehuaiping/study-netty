@@ -1,4 +1,4 @@
-package com.soulmate.netty.decode;
+package com.soulmate.netty.encode;
 
 import io.netty.buffer.ByteBuf;
 import org.jboss.marshalling.ByteOutput;

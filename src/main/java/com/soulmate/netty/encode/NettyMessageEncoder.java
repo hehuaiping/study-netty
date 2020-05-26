@@ -1,4 +1,4 @@
-package com.soulmate.netty.decode;
+package com.soulmate.netty.encode;
 
 import com.soulmate.netty.common.MarshallingConst;
 import com.soulmate.netty.message.Header;
@@ -7,11 +7,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
-import io.netty.handler.codec.marshalling.DefaultMarshallerProvider;
-import io.netty.handler.codec.marshalling.MarshallingEncoder;
-import org.jboss.marshalling.MarshallerFactory;
-import org.jboss.marshalling.Marshalling;
-import org.jboss.marshalling.MarshallingConfiguration;
 
 import java.util.List;
 import java.util.Map;
@@ -21,23 +16,15 @@ import java.util.Objects;
  * Netty消息编码器
  * @author soulmate
  */
-public class NettyMessageEncode extends MessageToMessageEncoder<NettyMessage> {
+public class NettyMessageEncoder extends MessageToMessageEncoder<NettyMessage> {
 
     /**
-     * 解码器
+     * 编码
      */
-    private MarshallingEncoder marshallingEncoder;
+    private final MarshallingEncoder marshallingEncoder;
 
-    public NettyMessageEncode() {
-        // 首先通过Marshalling工具类的精通方法获取Marshalling实例对象 参数serial标识创建的是java序列化工厂对象。
-        MarshallerFactory factory = Marshalling.getProvidedMarshallerFactory(MarshallingConst.SERIAL);
-        // 创建了MarshallingConfiguration对象，配置了版本号为5
-        MarshallingConfiguration configuration = new MarshallingConfiguration();
-        configuration.setVersion(4);
-        // 根据marshallerFactory和configuration创建provider
-        DefaultMarshallerProvider provider = new DefaultMarshallerProvider(factory, configuration);
-        // //构建Netty的MarshallingEncoder对象，MarshallingEncoder用于实现序列化接口的POJO对象序列化为二进制数组
-        this.marshallingEncoder = new MarshallingEncoder(provider);
+    public NettyMessageEncoder(MarshallingEncoder marshallingEncoder) {
+        this.marshallingEncoder = marshallingEncoder;
     }
 
     @Override
@@ -73,8 +60,22 @@ public class NettyMessageEncode extends MessageToMessageEncoder<NettyMessage> {
                 // key字节数据
                 sendBuf.writeBytes(keyArray);
                 value = entries.getValue();
-
+                // 对象编码
+                marshallingEncoder.encode(value, sendBuf);
             }
+            key = null;
+            keyArray = null;
+            value = null;
+        }
+        // 消息体
+        if(Objects.nonNull(msg.getBody())) {
+            // 对象编码
+            marshallingEncoder.encode(msg.getBody(), sendBuf);
+        }else {
+            // 没有body
+            sendBuf.writeInt(0);
+            // 重新设置header中的消息长度
+            sendBuf.setInt(4, sendBuf.readableBytes());
         }
     }
 }

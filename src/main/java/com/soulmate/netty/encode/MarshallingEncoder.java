@@ -1,5 +1,6 @@
-package com.soulmate.netty.decode;
+package com.soulmate.netty.encode;
 
+import com.soulmate.netty.common.MarshallingConst;
 import com.soulmate.netty.factory.MarshallingCodecFactory;
 import io.netty.buffer.ByteBuf;
 import org.jboss.marshalling.Marshaller;
@@ -13,7 +14,7 @@ public class MarshallingEncoder {
     /**
      * 长度占位符
      */
-    private static final byte[] LENGTH_PLACEHOLDER = new byte[4];
+    private static final byte[] LENGTH_PLACEHOLDER = new byte[MarshallingConst.LENGTH_PLACEHOLDER];
 
     Marshaller marshaller;
 
@@ -36,7 +37,7 @@ public class MarshallingEncoder {
             // 对象序列化完成后，根据writerIndex 计算对象码流长度，更新占位符数据
             // setInt方法不会改变writerIndex和readerIndex
             // 用当前已写入字节长度 - 占位符之前已写入字节长度 - 减去占位符长度 = 对象码流字节长度
-            out.setInt(lengthPos, out.writerIndex() - lengthPos - 4);
+            out.setInt(lengthPos, out.writerIndex() - lengthPos - MarshallingConst.LENGTH_PLACEHOLDER);
         }finally {
             marshaller.close();
         }
