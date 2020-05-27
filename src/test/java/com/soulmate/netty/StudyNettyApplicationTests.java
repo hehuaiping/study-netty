@@ -10,4 +10,8 @@ class StudyNettyApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void print() {
+        System.out.println(1024 << 1);
+    }
 }

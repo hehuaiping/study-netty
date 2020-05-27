@@ -1,4 +1,4 @@
-package com.soulmate.netty.auth;
+package com.soulmate.netty.hendler.auth;
 
 import com.soulmate.netty.common.MessageType;
 import com.soulmate.netty.message.Header;
@@ -16,7 +16,9 @@ public class LoginAuthReqHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         // 通道激活的时候，构建登录认证
-        ctx.writeAndFlush(buildLoginReq());
+        NettyMessage loginReq = buildLoginReq();
+        System.out.println("Client send login request : ---> " + loginReq);
+        ctx.writeAndFlush(loginReq);
     }
 
     private NettyMessage buildLoginReq() {

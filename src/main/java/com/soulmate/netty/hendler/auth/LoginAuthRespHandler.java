@@ -1,4 +1,4 @@
-package com.soulmate.netty.auth;
+package com.soulmate.netty.hendler.auth;
 
 import com.soulmate.netty.common.MessageType;
 import com.soulmate.netty.message.Header;
