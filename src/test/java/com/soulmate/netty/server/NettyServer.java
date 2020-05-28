@@ -57,4 +57,15 @@ class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
         // 心跳处理器
         pipeline.addLast("HeartBeatRespHandler", new HeartBeatRespHandler());
     }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("通道激活...");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("通道断开...");
+        super.channelInactive(ctx);
+    }
 }

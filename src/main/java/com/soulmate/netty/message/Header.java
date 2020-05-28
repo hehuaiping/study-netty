@@ -3,6 +3,7 @@ package com.soulmate.netty.message;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,5 +39,5 @@ public final class Header {
     /**
      * 可选附件
      */
-    private Map<String, Object> attachment;
+    private Map<String, Object> attachment = new HashMap<>(8);
 }

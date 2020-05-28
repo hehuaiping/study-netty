@@ -86,6 +86,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
         // 删除缓存
         nodeCheck.remove(ctx.channel().remoteAddress());
         ctx.close();

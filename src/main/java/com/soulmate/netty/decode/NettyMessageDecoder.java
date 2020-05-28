@@ -10,6 +10,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author soulmate
@@ -26,10 +27,10 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
 
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
-        /*ByteBuf frame = (ByteBuf) super.decode(ctx, in);
+        ByteBuf frame = (ByteBuf) super.decode(ctx, in);
         if(Objects.isNull(frame)) {
             return null;
-        }*/
+        }
         NettyMessage message = new NettyMessage();
         Header header = new Header();
         // 读取32bit
@@ -77,4 +78,6 @@ public class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
         // 解码完成
         return message;
     }
+
+
 }

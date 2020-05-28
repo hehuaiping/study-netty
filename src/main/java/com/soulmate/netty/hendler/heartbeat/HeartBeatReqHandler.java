@@ -50,6 +50,7 @@ public class HeartBeatReqHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
         if(Objects.nonNull(heartBeat)) {
             heartBeat.cancel(true);
             heartBeat = null;

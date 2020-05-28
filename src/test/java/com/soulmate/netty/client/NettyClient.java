@@ -12,7 +12,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 
-import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -33,10 +32,12 @@ public class NettyClient {
                     .option(ChannelOption.TCP_NODELAY,true)
                     .handler(new NettyClientInitializer());
 
+
             // 发起异步连接
-            ChannelFuture future = bootstrap.connect(
+           /* ChannelFuture future = bootstrap.connect(
                     new InetSocketAddress(host, port),
-                    new InetSocketAddress(NettyConstant.LOCAL_IP, NettyConstant.LOCAL_PORT)).sync();
+                    new InetSocketAddress(NettyConstant.LOCAL_IP, NettyConstant.LOCAL_PORT)).sync();*/
+            ChannelFuture future = bootstrap.connect(host,port);
             future.channel().closeFuture().sync();
         }finally {
             // 所有资源释放完成后，清空资源，再次发起重连

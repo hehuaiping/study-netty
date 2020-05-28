@@ -9,6 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,5 +79,10 @@ public class NettyMessageEncoder extends MessageToMessageEncoder<NettyMessage> {
             // 重新设置header中的消息长度
             sendBuf.setInt(4, sendBuf.readableBytes());
         }
+        byte[] array = sendBuf.array();
+        out.add(sendBuf);
+        System.out.println(Arrays.toString(array));
     }
+
+
 }
