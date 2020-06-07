@@ -9,10 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Netty消息编码器
@@ -50,7 +47,7 @@ public class NettyMessageEncoder extends MessageToMessageEncoder<NettyMessage> {
         // 写入32bit attachment size
         sendBuf.writeInt(header.getAttachment().size());
         // 写入附件
-        if(Objects.nonNull(header.getAttachment())) {
+        if(!header.getAttachment().isEmpty()) {
             String key = null;
             byte[] keyArray = null;
             Object value = null;

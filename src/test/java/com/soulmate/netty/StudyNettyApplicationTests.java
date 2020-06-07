@@ -13,5 +13,7 @@ class StudyNettyApplicationTests {
     @Test
     void print() {
         System.out.println(1024 << 1);
+        System.out.println(1024 << 10);
+        System.out.println(1024 * 1024);
     }
 }

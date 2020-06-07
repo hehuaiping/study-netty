@@ -66,7 +66,7 @@ class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
         // 解码器
-        pipeline.addLast(new NettyMessageDecoder(1024 << 1,4,4));
+        pipeline.addLast(new NettyMessageDecoder(1024 << 10,4,4));
         // 编码器
         pipeline.addLast("MessageEncoder", new NettyMessageEncoder());
         // 心跳处理器  如果50s没有收到任何消息，则代表当前链路已断开，清理资源后重新连接

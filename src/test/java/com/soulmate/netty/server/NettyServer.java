@@ -47,7 +47,7 @@ class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
         // 解码器
-        pipeline.addLast(new NettyMessageDecoder(1024 << 1,4,4));
+        pipeline.addLast(new NettyMessageDecoder(1024 << 10,4,4));
         // 解码器
         pipeline.addLast("NettyMessageEncoder", new NettyMessageEncoder());
         // 解码器
@@ -56,6 +56,11 @@ class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("LoginAuthRespHandler", new LoginAuthRespHandler());
         // 心跳处理器
         pipeline.addLast("HeartBeatRespHandler", new HeartBeatRespHandler());
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("读取数据：---> " + msg);
     }
 
     @Override
